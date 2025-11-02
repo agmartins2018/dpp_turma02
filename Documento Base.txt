@@ -1,0 +1,2 @@
+Criar um Api rest para acompanhamento de gerenciamento do desenvolvimento de automação de teste utilizando IA.
+
