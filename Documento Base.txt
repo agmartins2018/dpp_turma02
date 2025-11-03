@@ -1,2 +1,20 @@
-Criar um Api rest para acompanhamento de gerenciamento do desenvolvimento de automação de teste utilizando IA.
+Objetivo: Criar um Api rest para acompanhamento de gerenciamento do desenvolvimento de automação de teste utilizando IA.
 
+
+Pesquisar por:
+-> nichos de negócios inovadores
+-> criar apis
+-> desenvolver a solução utilizando cypress (web)
+-> 
+
+
+
+Contexto: 
+- A Api possui as seguintes funcionalidades:
+=> registro de aluno,
+
+
+
+Diferença Contexto x Regra
+Contexto é o que a IA não sabe: ex: funcionalidades
+Regras: O que a IA leva em consideração ao construir aquilo
