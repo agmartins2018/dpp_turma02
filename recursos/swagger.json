@@ -1,0 +1,146 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Mensageria IA e Monitoramento",
+    "version": "1.0.0",
+    "description": "Monitora fluxos de mensageria, detecta anomalias, gera alertas e permite acompanhamento em tempo real. Autenticação JWT."
+  },
+  "servers": [ { "url": "http://localhost:3000" } ],
+  "paths": {
+    "/api/login": { "post": {
+      "summary": "Login de usuário (gera JWT)",
+      "requestBody": { "required": true, "content": { "application/json": {
+        "schema": { "type": "object", "properties": {
+          "username": { "type": "string" }, "password": { "type": "string" }
+        }, "required": ["username", "password"] } } } },
+      "responses": {
+        "200": { "description": "JWT gerado.", "content": { "application/json": { "schema": { "type": "object", "properties": { "token": { "type": "string" } } } } } },
+        "401": { "description": "Usuário ou senha inválidos." }
+      }
+    }},
+    "/api/flows": {
+      "get": {
+        "summary": "Lista todos os fluxos monitorados",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Lista de fluxos", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Flow" } } } } }, "401": { "description": "Token não informado" }, "403": { "description": "Token inválido" } }
+      },
+      "post": {
+        "summary": "Cria um novo fluxo monitorado",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": { "required": true, "content": { "application/json": {
+          "schema": { "type": "object", "properties": {
+            "name": { "type": "string" },
+            "description": { "type": "string" }
+          }, "required": ["name"] } } } },
+        "responses": { "201": { "description": "Fluxo criado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Flow" } } } }, "400": { "description": "Nome obrigatório." }, "401": { "description": "Token não informado" }, "403": { "description": "Token inválido" } }
+      }
+    },
+    "/api/events": {
+      "get": {
+        "summary": "Lista eventos recentes de mensageria",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Lista de eventos", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Event" } } } } }, "401": { "description": "Token não informado" }, "403": { "description": "Token inválido" } }
+      },
+      "post": {
+        "summary": "Registra evento de mensageria",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": { "required": true, "content": { "application/json": {
+          "schema": { "type": "object", "properties": {
+            "flowId": { "type": "integer" },
+            "payload": { "type": "string" },
+            "type": { "type": "string" }
+          }, "required": ["flowId", "payload"] } } } },
+        "responses": { "201": { "description": "Evento registrado", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Event" } } } }, "400": { "description": "Campos obrigatórios ausentes." }, "401": { "description": "Token não informado" }, "403": { "description": "Token inválido" }, "404": { "description": "Fluxo não encontrado." } }
+      }
+    },
+    "/api/anomalies": {
+      "get": {
+        "summary": "Lista anomalias detectadas",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Lista de anomalias", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Anomaly" } } } } }, "401": { "description": "Token não informado" }, "403": { "description": "Token inválido" } }
+      },
+      "post": {
+        "summary": "Detecta/anota nova anomalia (simulação)",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": { "required": true, "content": { "application/json": {
+          "schema": { "type": "object", "properties": {
+            "eventId": { "type": "integer" },
+            "type": { "type": "string" },
+            "description": { "type": "string" }
+          }, "required": ["eventId", "type"] } } } },
+        "responses": { "201": { "description": "Anomalia criada", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Anomaly" } } } }, "404": { "description": "Evento não encontrado." }, "401": { "description": "Token não informado" }, "403": { "description": "Token inválido" } }
+      }
+    },
+    "/api/alerts": {
+      "get": {
+        "summary": "Lista alertas em aberto/gerados",
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Lista de alertas", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Alert" } } } } }, "401": { "description": "Token não informado" }, "403": { "description": "Token inválido" } }
+      },
+      "post": {
+        "summary": "Cria alerta para uma anomalia",
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": { "required": true, "content": { "application/json": {
+          "schema": { "type": "object", "properties": {
+            "anomalyId": { "type": "integer" }
+          }, "required": ["anomalyId"] } } } },
+        "responses": { "201": { "description": "Alerta criado.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Alert" } } } }, "404": { "description": "Anomalia não encontrada." }, "401": { "description": "Token não informado" }, "403": { "description": "Token inválido" } }
+      }
+    },
+    "/api/alerts/{id}/ack": {
+      "patch": {
+        "summary": "Reconhece (ack) um alerta",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [ { "name": "id", "in": "path", "schema": { "type": "integer" }, "required": true } ],
+        "responses": { "200": { "description": "Alerta reconhecido", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Alert" } } } }, "404": { "description": "Alerta não encontrado." }, "401": { "description": "Token não informado" }, "403": { "description": "Token inválido" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Flow": {
+        "type": "object", "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "status": { "type": "string" }
+        }
+      },
+      "Event": {
+        "type": "object", "properties": {
+          "id": { "type": "integer" },
+          "flowId": { "type": "integer" },
+          "payload": { "type": "string" },
+          "type": { "type": "string" },
+          "timestamp": { "type": "string" }
+        }
+      },
+      "Anomaly": {
+        "type": "object", "properties": {
+          "id": { "type": "integer" },
+          "eventId": { "type": "integer" },
+          "type": { "type": "string" },
+          "description": { "type": "string" },
+          "detectedAt": { "type": "string" }
+        }
+      },
+      "Alert": {
+        "type": "object", "properties": {
+          "id": { "type": "integer" },
+          "anomalyId": { "type": "integer" },
+          "status": { "type": "string" },
+          "createdAt": { "type": "string" },
+          "acknowledged": { "type": "boolean" }
+        }
+      }
+    }
+  },
+  "tags": []
+}
