@@ -2,18 +2,19 @@ Tarefas:
 => Ver os vídeos:
 => separar o prompt e adaptar a minha realidade
 => 
-
+19.12 - 05.01
+https://www.youtube.com/watch?v=0mYx3hSEOAw&list=PLDCAXXDIop9xP2D98JaUD6OPIyaa1r6UE&index=4
 =======================================================================================================================================
 Nome do projeto: dpp_turma02
 
-
+A Api possui as seguintes funcionalidades: Autenticação e gerenciamento de tokens, Registro e gerenciamento de execuções de testes, Envio e consulta de resultados de testes, Processamento e análise com IA, Geração e download de relatórios, monitoramento e métricas.
 =======================================================================================================================================
 Prompt:
 Objetivo
 Criar um Api rest para acompanhamento de gerenciamento do desenvolvimento de automação de teste utilizando IA.
 
 Contexto
-A Api possui as seguintes funcionalidades: Autenticação e gerenciamento de tokens, Registro e gerenciamento de execuções de testes, Envio e consulta de resultados de testes, Processamento e análise com IA, Geração e download de relatórios, monitoramento e métricas.
+Considerando a Interface Gráfica e a Validação de mensageria usando Kafka, crie uma Api Rest de um sistema que monitora, testa e visualiza fluxos de mensageria em tempo real, detecta padrões anômalos, gera alertas. 
 
 Para que eu possa usar as funcionalidades, preciso fazer login.
 
