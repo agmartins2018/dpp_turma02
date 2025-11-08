@@ -42,7 +42,7 @@ describe('Fluxos, Eventos, Anomalias e Alertas', () => {
       method: 'POST',
       url: 'http://localhost:3000/api/anomalies',
       headers: { Authorization: `Bearer ${token}` },
-      body: { dados: 'Teste' },
+      body: { eventId: 1, type: "tipo 1", description: "descrição 1" },
       failOnStatusCode: false,
     }).its('status').should('be.oneOf', [200, 201, 400]);
   });
@@ -57,7 +57,7 @@ describe('Fluxos, Eventos, Anomalias e Alertas', () => {
       method: 'POST',
       url: 'http://localhost:3000/api/alerts',
       headers: { Authorization: `Bearer ${token}` },
-      body: { mensagem: 'Teste Alerta' },
+      body: { anomalyId: 1 },
       failOnStatusCode: false,
     }).its('status').should('be.oneOf', [200, 201]);
   });
